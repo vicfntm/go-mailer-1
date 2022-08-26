@@ -24,12 +24,11 @@ func (mailer *MailerService) Push(pack models.FeedbackForm) (bool, error) {
 	target := []string{mailer.adminEmail}
 
 	body := fmt.Sprintf("name: %s \n\n phone: %s \n\n text: %s \n", pack.Name, pack.Phone, pack.MessageText)
-	res, err := mailer.SendEmailSMTP(target, body)
+	_, err := mailer.SendEmailSMTP(target, body)
 	if err != nil {
 		fmt.Println(err.Error())
+		return false, err
 	}
-
-	fmt.Println(res)
 
 	return true, nil
 }

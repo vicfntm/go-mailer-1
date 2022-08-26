@@ -8,6 +8,8 @@ import (
 	"github.com/vcfntm/go-mailer-1/src/models"
 )
 
+var MESSAGE = "message did not sent"
+
 func (handler *Handler) feedbackForm(c *gin.Context) {
 	var input models.FeedbackForm
 
@@ -15,6 +17,8 @@ func (handler *Handler) feedbackForm(c *gin.Context) {
 		exceptionhandlers.NewErrorResponse(c, http.StatusBadRequest, err.Error())
 	}
 
-	go handler.services.Push(input)
+	if _, err := handler.services.Push(input); err != nil {
+		exceptionhandlers.NewErrorResponse(c, http.StatusBadRequest, MESSAGE)
+	}
 
 }
