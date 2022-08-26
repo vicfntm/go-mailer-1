@@ -16,7 +16,8 @@ type MailerService struct {
 	adminEmail string
 }
 
-var SUBJECT = "client feedback form \n"
+var SUBJECT = "Subject: client feedback form \n"
+var MIME_TYPE = "MIME-version: 1.0;\nContent-Type: text/plain; charset=\"UTF-8\";\n\n"
 
 func (mailer *MailerService) Push(pack models.FeedbackForm) (bool, error) {
 
@@ -37,8 +38,7 @@ func (mailer *MailerService) SendEmailSMTP(to []string, body string) (bool, erro
 
 	emailAuth := smtp.PlainAuth("", mailer.emailLogin, mailer.password, mailer.host)
 
-	mime := "MIME-version: 1.0;\nContent-Type: text/plain; charset=\"UTF-8\";\n\n"
-	msg := []byte(SUBJECT + mime + "\n" + body)
+	msg := []byte(SUBJECT + MIME_TYPE + "\n" + body)
 	addr := fmt.Sprintf("%s:%s", mailer.host, mailer.port)
 
 	if err := smtp.SendMail(addr, emailAuth, mailer.emailLogin, to, msg); err != nil {
