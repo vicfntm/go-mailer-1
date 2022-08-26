@@ -13,11 +13,12 @@ type MailerService struct {
 	password   string
 	host       string
 	port       string
+	adminEmail string
 }
 
 func (mailer *MailerService) Push(pack models.FeedbackForm) (bool, error) {
 
-	target := []string{"khrestyk.shop@gmail.com"}
+	target := []string{mailer.adminEmail}
 
 	body := fmt.Sprintf("name: %s \n\n phone: %s \n\n text: %s \n", pack.Name, pack.Phone, pack.MessageText)
 	res, err := mailer.SendEmailSMTP(target, body)
@@ -51,5 +52,6 @@ func NewMailerService() *MailerService {
 		password:   os.Getenv("EMAIL_PASSWORD"),
 		host:       os.Getenv("EMAIL_HOST"),
 		port:       os.Getenv("EMAIL_PORT"),
+		adminEmail: os.Getenv("EMAIL_ADMIN"),
 	}
 }
