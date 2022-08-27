@@ -11,9 +11,9 @@ type Handler struct {
 
 func (handler *Handler) InitRoutes() *gin.Engine {
 	router := gin.New()
-	mailers := router.Group("/mail")
+	mailers := router.Group("/feedback-form")
 	{
-		mailers.POST("/feedback-form", handler.feedbackForm)
+		mailers.POST("/", handler.feedbackForm)
 	}
 
 	return router
